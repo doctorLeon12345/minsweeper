@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>minsweeper</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body onload="init()">
+<div class="box">
+    <div class="show">
+        <div class="main one"><span class="steps"><p style="display: inline;">steps:</p>0</span></div>
+        <div class="main two"><img src="imeges/smile.jpg" alt="face" width="70" height="40" class="img"></div>
+        <div class="main three"><span class="timer"><p style="display: inline;">steps:</p>0</span></div>
+         
+    </div>
+    <div class="buttons">
+        <button id="1" class="btn" type="button" onclick="startGame(this)">level1</button>
+        <button id="2" class="btn" type="button" onclick="startGame(this)">level2</button>
+        <button id="3" class="btn" type="button" onclick="startGame(this)">level3</button>
+    </div>
+
+    <div class="board-container">
+        
+
+    </div>
+</div>
+
+    <script src="code/game.js"></script>
+    <script src="code/utils.js"></script>
+    <script src="code/mine.js"></script>
+
+</body>
+
+</html>
