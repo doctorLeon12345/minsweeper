@@ -135,7 +135,7 @@ function gameOn(elem){
         isTimerOn = false;
     }
     renderStepsCounter();
-    padding = revillData(row, col);
+    revillData(row, col);
     printMat(gBoard);
     console.log(sumOfOpenCells);
 
@@ -173,9 +173,8 @@ function markMineBlob(row, col){
 }
 
 function revillData(row, col){
-    if(!isRevill) return;
+//if(!isRevill) return;
     var state = isCleanNeibours(row, col);
-    console.log(state);
     if(state){
         for(var i=row-1; i<row+2; i++){
             for(var j=col-1; j<col+2; j++){
@@ -227,10 +226,9 @@ function revillData(row, col){
 */
 
 function isCleanNeibours(row, col){
-    for(var i=row-1-padding; i<row+2+padding; i++){
-        for(var j=col-1-padding; j<col+2+padding; j++){
+    for(var i=row-1; i<row+2; i++){
+        for(var j=col-1; j<col+2; j++){
             if(!(i<0 || i>memoryBoard.length-1 || j<0 || j>memoryBoard[0].length-1)){
-                console.log(memoryBoard[i][j].type);
                 if(memoryBoard[i][j].type === MINE){
                     return false;
                 }
