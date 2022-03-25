@@ -10,10 +10,10 @@ function renderGame(mat, selector) {
           var col = mat[i][j].location.j;
           var className = mat[i][j].state;
           var color = mat[i][j].color;
-          if(mat[i][j].flag === FLAG){
-            cell = FLAG;
+          if(mat[i][j].type === FLAG){
+            color = 'white';
           }
-        strHTML += `<td style="font-style: italic; color: ${color}; "class="${className}" data-row="${row}" data-col="${col}" onclick="gameOn(this)">${cell}</td>`
+        strHTML += `<td style="font-style: italic; color: ${color}; "class="${className}" data-row="${row}" data-col="${col}" onclick="gameOn(this)" onmousedown=rightclick(this);><i style="font-size:24px;color:${color}" class="fa">${cell}</i></td>`
       }
       strHTML += '</tr>'
     }
@@ -78,13 +78,6 @@ function renderStepsCounter(){
     gStepsCounter++;
     elCell.innerHTML = gStepsCounter;
 }
-/*
-function renderCell(location, value) {
-    // Select the elCell and set the value
-    var elCell = document.querySelector(`.cell-${location.i}-${location.j}`);
-    elCell.innerHTML = value;
-  }
-  */
 
 function neibours(rIdx, cIdx){
   var gNeiboursOfMines = [];
@@ -127,5 +120,16 @@ function renderHTML(num, iIdx, jIdx){
   var elCell = document.querySelector(strHTML);
   elCell.innerHTML = num;
 
-}  
+}
+
+function playSound(row, col){
+  if(gBoard[row][col].type === MINE){
+    var audio = new Audio("audio/wrong.mp3");
+    audio.play();
+  }
+  else{
+    var audio = new Audio("audio/win.mp3");
+    audio.play();
+  }
+}
 

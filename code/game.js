@@ -13,9 +13,9 @@ var isTimerOn = true;
 var isGameOn = true;
 var padding = 0;
 var pointerId = 0;
-var FLAG = 'F';
+var FLAG = '&#xf024';
 var isRevill = true;
-var navigateNumberColors = ['blue', 'green', 'brown', 'magenta', 'yello', 'white', 'red'];
+var navigateNumberColors = ['blue', 'green', 'brown', 'magenta', 'yello', 'orange', 'red'];
 
 
 function createCell(i_idx, j_idx){
@@ -31,7 +31,7 @@ function createCell(i_idx, j_idx){
 
         state: 'close',
 
-        flag: ''
+        flag: false
     
     }
 
@@ -42,16 +42,14 @@ function init(){
     //first model initialization
     createMines(NUM_OF_MINES);
     memoryBoard = createMat(ROWS, COLS);
-    printMat(memoryBoard);
     gBoard = copyMat();
     courseOfTheGame();
-    printMat(gBoard);
+    printMat(memoryBoard);
     sumOfOpenCells = ROWS*COLS-NUM_OF_MINES;
 
     //first DOM initialization
     renderGame(gBoard, ".board-container");
-    
-    
+       
 }
 
 function startGame(elBtn){
@@ -68,6 +66,7 @@ function startGame(elBtn){
         sumOfOpenCells = 0;
         padding = 0;
         pointerId = 0;
+        isRevill = true;
         init();
     }
     else if(parseInt(elBtn.id) === 2){
@@ -83,6 +82,7 @@ function startGame(elBtn){
         sumOfOpenCells = 0;
         padding = 0;
         pointerId = 0;
+        isRevill = true;
         init();
     }
     else if(parseInt(elBtn.id) === 3){
@@ -98,17 +98,11 @@ function startGame(elBtn){
         sumOfOpenCells = 0;
         padding = 0;
         pointerId = 0;
+        isRevill = true;
         init();
     }
 }
 
-/*
-function rightClick(ev){
-    gBoard[row][col].flag = FLAG;
-    isRevill = false;
-    renderGame(gBoard, ".board-container");
-    return;
-}*/
 
 function gameOn(elem){
     if(!(isGameOn)) return;
@@ -116,9 +110,9 @@ function gameOn(elem){
     var row = elem.dataset.row;
     var col = elem.dataset.col;
 
-    //elem.addEventListener('contextmenu', rightClick);
+    //if(gBoard[row][col].flag === true) return;
 
-    if(memoryBoard[row][col].type === MINE){
+    if(memoryBoard[row][col].type === MINE && gBoard[row][col].flag !== true){
         console.log("game over");
         isGameOn = false;
         clearInterval(gIntervalId);
@@ -126,6 +120,7 @@ function gameOn(elem){
         markMineBlob(row, col);
         var elImage = document.querySelector("img");
         elImage.src = "imeges/cry.jpg";
+        playSound(row, col);
         renderGame(gBoard, ".board-container");
         return;
     }
@@ -134,21 +129,56 @@ function gameOn(elem){
         gIntervalId = setInterval(renderTimer, 1000);
         isTimerOn = false;
     }
-    renderStepsCounter();
-    revillData(row, col);
-    printMat(gBoard);
-    console.log(sumOfOpenCells);
 
-    if(sumOfOpenCells <= 0){
+    renderStepsCounter();
+    if(gBoard[row][col].flag !== true && gBoard[row][col].state !== 'open'){
+        revillData(row, col);
+        printMat(gBoard);
+        console.log(sumOfOpenCells);
+    }
+    
+
+    if(sumOfOpenCells <= 0 && gBoard[row][col].flag !== true){
         console.log("you win!");
+        clearInterval(gIntervalId);
         revillMines();
         isGameOn = false;
+        playSound(row, col);
         renderGame(gBoard, ".board-container");
+        return;
     }
 
+    if(gBoard[row][col].flag === false){
+        renderGame(gBoard, ".board-container");
+    }
     
-    //renderHTML(numOfCloseMines, row, col);
-    renderGame(gBoard, ".board-container");
+}
+
+
+function rightclick(elem) {
+    var rightclick;
+    var e = window.event;
+    if (e.which) rightclick = (e.which == 3);
+    else if (e.button) rightclick = (e.button == 2);
+     // true or false, you can trap right click here by if comparison
+
+     if(rightclick){
+         console.log("clicked");
+        var row = elem.dataset.row;
+        var col = elem.dataset.col;
+
+        if(gBoard[row][col].flag === false){
+            gBoard[row][col].type = FLAG;
+            gBoard[row][col].flag = true;
+        }
+        else{
+            gBoard[row][col].type = '';
+            gBoard[row][col].flag = false;
+        }
+         
+        renderGame(gBoard, ".board-container");
+     }
+     
 }
 
 
@@ -173,13 +203,15 @@ function markMineBlob(row, col){
 }
 
 function revillData(row, col){
-//if(!isRevill) return;
+    if(gBoard[row][col].flag === true) return;
     var state = isCleanNeibours(row, col);
     if(state){
         for(var i=row-1; i<row+2; i++){
             for(var j=col-1; j<col+2; j++){
                 if(!(i<0 || i>memoryBoard.length-1 || j<0 || j>memoryBoard[0].length-1)){
-                    sumOfOpenCells--;
+                    if(gBoard[i][j].state !== 'open'){
+                        sumOfOpenCells--
+                    }
                     gBoard[i][j].type = memoryBoard[i][j].type;
                     gBoard[i][j].state = 'open';
                     gBoard[i][j].color = memoryBoard[i][j].color;
@@ -238,10 +270,11 @@ function isCleanNeibours(row, col){
     return true;
 }
 
+//update memory board with mineNavigetorNeibours
 function upDateBoard(numOfCloseMines, row, col){
     if(numOfCloseMines !== 0){
         //update model
-        //numOfCloseMines.toString();
+        //update memory
         memoryBoard[row][col].type = numOfCloseMines;
         if(numOfCloseMines === 1){
             memoryBoard[row][col].color = navigateNumberColors[0];
@@ -261,10 +294,6 @@ function upDateBoard(numOfCloseMines, row, col){
         else if(numOfCloseMines === 6){
             memoryBoard[row][col].color = navigateNumberColors[5];
         }
-
-        //update DOM
-        //renderHTML(numOfCloseMines, row, col);
-
     }
 }
 

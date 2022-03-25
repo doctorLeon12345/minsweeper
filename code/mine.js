@@ -2,7 +2,7 @@
 
 
 var gMines = [];
-var MINE = '*';
+var MINE = '&#xf1e2;';
 
 function createMine(){
     var mine = {
