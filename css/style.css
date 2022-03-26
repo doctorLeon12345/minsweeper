@@ -1,29 +1,33 @@
 body {
-    background-color: white;
-    color: black;
-    
+    background-color: burlywood;    
   }
 
   .box{
     box-sizing: border-box;
-    background-color: blueviolet;
+    background-color: lightgrey;
+    width: 800px;
+    border: 15px solid rgb(5, 66, 68);
+    padding: 50px;
     margin: auto;
+    background-image: url(../imeges/ferrari.jpg);
   }
 
   .main{
     display: inline-block;
-    height: 50px;
-    width: 50px;
+    height: 70px;
+    width: 70px;
   }
 
 
   .buttons{
     display: inline-block;
+    border-width: 3px;
+    border-color: cadetblue;
   }
 
   
   .btn{
-    margin-left: 160px;
+    margin-left: 100px;
     font-size: x-large;
     font-weight: bold;
   }
@@ -32,23 +36,26 @@ body {
     text-align: center;
     font-size: xx-large;
     font-weight: bold;
-    margin-left: 170px;
+    margin-left: 70px;
+    display: inline-block;
   }
 
   .two{
-    background-size: contain;
-    float: left;
+    display: inline-block;
   }
 
-  .img{
-    margin-left: 400px;
+  img{
+    margin-left: 150px;
+    height: 70%;
+    margin-top: 30px;    
   }
 
   .three{
-    margin-left: 400px;
+    margin-left: 320px;
     text-align: center;
     font-size: xx-large;
     font-weight: bold;
+    display: inline-block;
   }
 
 .close {
@@ -57,7 +64,8 @@ body {
     text-align: center;
     font-size: 1.5em;
     background-color: gray;
-    box-shadow: 2px 2px;
+    box-shadow: 3px 3px;
+    cursor: pointer;
     
   }
 
@@ -72,7 +80,7 @@ body {
 
 .board-container{
     box-sizing: content-box;
-    margin-left: 50%;
+    margin-left: 35%;
     border: 2px;
     margin-top: 20px;
     border-color: black;
@@ -89,6 +97,6 @@ h2{
 .show{
     box-sizing: content-box;
     border: 3px;
-    border-color: blue;
+    border-color: aqua;
     background-color: brown;
 }

@@ -80,7 +80,7 @@ function startGame(elBtn){
          memoryBoard;
          ROWS = 8;
          COLS = 8;
-         NUM_OF_MINES = 5;
+         NUM_OF_MINES = 6;
          sumOfOpenCells = 0;
          gIntervalId = null;
          gTimer = 0;
@@ -101,7 +101,7 @@ function startGame(elBtn){
          memoryBoard;
          ROWS = 12;
          COLS = 12;
-         NUM_OF_MINES = 8;
+         NUM_OF_MINES = 9;
          sumOfOpenCells = 0;
          gIntervalId = null;
          gTimer = 0;
