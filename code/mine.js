@@ -1,6 +1,5 @@
 'use strict'
 
-
 var gMines = [];
 var MINE = '&#xf1e2;';
 
@@ -44,6 +43,8 @@ function setMines(){
 function revillMines(){
     for(var i=0; i<gMines.length; i++){
       gBoard[gMines[i].location.i][gMines[i].location.j].type = MINE;
+      gBoard[gMines[i].location.i][gMines[i].location.j].state = 'open';
+
     }
 }
 

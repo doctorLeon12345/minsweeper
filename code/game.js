@@ -45,6 +45,7 @@ function init(){
     gBoard = copyMat();
     courseOfTheGame();
     printMat(memoryBoard);
+    printMat(gBoard);
     sumOfOpenCells = ROWS*COLS-NUM_OF_MINES;
 
     //first DOM initialization
@@ -54,52 +55,67 @@ function init(){
 
 function startGame(elBtn){
     if(parseInt(elBtn.id) === 1){
-        ROWS = 4;
-        COLS = 4;
-        NUM_OF_MINES = 2;
-        gIntervalId = null;
-        gTimer = 0;
-        gStepsCounter = 0;
-        isTimerOn = true;
-        isGameOn = true;
-        gMines = [];
-        sumOfOpenCells = 0;
-        padding = 0;
-        pointerId = 0;
-        isRevill = true;
-        init();
+         gBoard;
+         memoryBoard;
+         ROWS = 4;
+         COLS = 4;
+         NUM_OF_MINES = 2;
+         sumOfOpenCells = 0;
+         gIntervalId = null;
+         gTimer = 0;
+         gStepsCounter = 0;
+         isTimerOn = true;
+         isGameOn = true;
+         padding = 0;
+         pointerId = 0;
+         FLAG = '&#xf024';
+         isRevill = true;
+         find = false;
+         MINE = '&#xf1e2;';
+         gMines = [];
+         init();
     }
     else if(parseInt(elBtn.id) === 2){
-        ROWS = 8;
-        COLS = 8;
-        NUM_OF_MINES = 4;
-        gIntervalId = null;
-        gTimer = 0;
-        gStepsCounter = 0;
-        isTimerOn = true;
-        isGameOn = true;
-        gMines = [];
-        sumOfOpenCells = 0;
-        padding = 0;
-        pointerId = 0;
-        isRevill = true;
-        init();
+         gBoard;
+         memoryBoard;
+         ROWS = 8;
+         COLS = 8;
+         NUM_OF_MINES = 5;
+         sumOfOpenCells = 0;
+         gIntervalId = null;
+         gTimer = 0;
+         gStepsCounter = 0;
+         isTimerOn = true;
+         isGameOn = true;
+         padding = 0;
+         pointerId = 0;
+         FLAG = '&#xf024';
+         isRevill = true;
+         find = false;
+         MINE = '&#xf1e2;';
+         gMines = [];
+         init();
     }
     else if(parseInt(elBtn.id) === 3){
-        ROWS = 12;
-        COLS = 12;
-        NUM_OF_MINES = 6;
-        gIntervalId = null;
-        gTimer = 0;
-        gStepsCounter = 0;
-        isTimerOn = true;
-        isGameOn = true;
-        gMines = [];
-        sumOfOpenCells = 0;
-        padding = 0;
-        pointerId = 0;
-        isRevill = true;
-        init();
+         gBoard;
+         memoryBoard;
+         ROWS = 12;
+         COLS = 12;
+         NUM_OF_MINES = 8;
+         sumOfOpenCells = 0;
+         gIntervalId = null;
+         gTimer = 0;
+         gStepsCounter = 0;
+         isTimerOn = true;
+         isGameOn = true;
+         padding = 0;
+         pointerId = 0;
+         FLAG = '&#xf024';
+         isRevill = true;
+         find = false;
+         MINE = '&#xf1e2;';
+         gMines = [];
+         init();
     }
 }
 
@@ -107,8 +123,10 @@ function startGame(elBtn){
 function gameOn(elem){
     if(!(isGameOn)) return;
 
-    var row = elem.dataset.row;
-    var col = elem.dataset.col;
+    var row = parseInt(elem.dataset.row);
+    var col =  parseInt(elem.dataset.col);
+    console.log(typeof row);
+    console.log(typeof col);
 
     //if(gBoard[row][col].flag === true) return;
 
@@ -202,6 +220,7 @@ function markMineBlob(row, col){
     gBoard[row][col].color = navigateNumberColors[len-1];
 }
 
+/*
 function revillData(row, col){
     if(gBoard[row][col].flag === true) return;
     var state = isCleanNeibours(row, col);
@@ -210,11 +229,11 @@ function revillData(row, col){
             for(var j=col-1; j<col+2; j++){
                 if(!(i<0 || i>memoryBoard.length-1 || j<0 || j>memoryBoard[0].length-1)){
                     if(gBoard[i][j].state !== 'open'){
-                        sumOfOpenCells--
+                        sumOfOpenCells--;
+                        gBoard[i][j].type = memoryBoard[i][j].type;
+                        gBoard[i][j].state = 'open';
+                        gBoard[i][j].color = memoryBoard[i][j].color;
                     }
-                    gBoard[i][j].type = memoryBoard[i][j].type;
-                    gBoard[i][j].state = 'open';
-                    gBoard[i][j].color = memoryBoard[i][j].color;
                 }
             }
         }
@@ -227,24 +246,18 @@ function revillData(row, col){
     }
     
 }
+*/
 
-/*
-//BONUS RECURSION
 function revillData(row, col){
+    if(gBoard[row][col].flag === true) return;
+    var neibours = [];
+    var cell = memoryBoard[row][col];
+    console.log(cell.location.i + "-" + cell.location.j);
+    neibours.push(cell)
     var state = isCleanNeibours(row, col);
-    console.log(state);
     if(state){
-        for(var i=row-1-padding; i<row+2+padding; i++){
-            for(var j=col-1-padding; j<col+2+padding; j++){
-                if(!(i<0 || i>memoryBoard.length-1 || j<0 || j>memoryBoard[0].length-1)){
-                    if(memoryBoard[i][j].type === MINE) return 0;
-                    sumOfOpenCells--;
-                    gBoard[i][j].type = memoryBoard[i][j].type;
-                    gBoard[i][j].state = 'open';
-                    gBoard[i][j].color = memoryBoard[i][j].color;
-                }
-            }
-        }
+        console.log("orech" + neibours.length);
+        expandBoard(neibours);
     }
     else{
         sumOfOpenCells--;
@@ -252,19 +265,30 @@ function revillData(row, col){
         gBoard[row][col].state = 'open';
         gBoard[row][col].color = memoryBoard[row][col].color;
     }
-    padding++;
-    revillData(row, col);
+    
 }
-*/
 
-function isCleanNeibours(row, col){
-    for(var i=row-1; i<row+2; i++){
-        for(var j=col-1; j<col+2; j++){
-            if(!(i<0 || i>memoryBoard.length-1 || j<0 || j>memoryBoard[0].length-1)){
-                if(memoryBoard[i][j].type === MINE){
+
+var enteries = 0;
+function isCleanNeibours(row, col)
+{
+    var x = true;
+    var len = col+1;
+    for(var i=row-1; i<row+2; i++)
+    {
+        for(var j=col-1; j <= len; j++)
+        {
+            console.log("j " + j + "len " +len);
+            x = (i<0 || i>memoryBoard.length-1 || j<0 || j>memoryBoard[0].length-1);
+            console.log(x);
+            if(x === false)
+            {
+                if(memoryBoard[i][j].type === MINE)
+                {
                     return false;
                 }
             }
+            
         }
     }
     return true;

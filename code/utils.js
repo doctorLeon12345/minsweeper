@@ -1,5 +1,7 @@
 'use strict'
 
+var find = false;
+
 function renderGame(mat, selector) {
     var strHTML = '<table border="0"><tbody>';
     for (var i = 0; i < mat.length; i++) {
@@ -107,6 +109,42 @@ function numerateCells(rIdx, cIdx){
       }
   }
   return counterMines;
+}
+
+function expandBoard(niebours){
+  var currNeibours = [];
+  console.log("shhenim " + niebours.length);
+  for(var i=0; i<niebours.length; i++){
+    currNeibours = checkNiebours(niebours[i], currNeibours);
+  }
+  if(find === true) return;
+  expandBoard(currNeibours);
+}
+
+function checkNiebours(cell, newNeibours){
+  for(var i=cell.location.i-1; i<cell.location.i+2; i++){
+    for(var j=cell.location.j-1; j<cell.location.j+2; j++){
+        if(!(i<0 || i>memoryBoard.length-1 || j<0 || j>memoryBoard[0].length-1)){
+          findBomb(memoryBoard[i][j]);
+          if(gBoard[i][j].state === 'close' && memoryBoard[i][j].type !== MINE){
+              sumOfOpenCells--;
+              gBoard[i][j].state = 'open';
+              console.log(gBoard[i][j].location.i + "-" + gBoard[i][j].location.j);
+              gBoard[i][j].type = memoryBoard[i][j].type;
+              gBoard[i][j].color = memoryBoard[i][j].color;
+              newNeibours.push(gBoard[i][j]);
+          }
+
+        }
+    }
+  }
+  return newNeibours;
+}
+
+function findBomb(field){
+  if(field.type === MINE){
+    find = true;
+  }
 }
   
 
