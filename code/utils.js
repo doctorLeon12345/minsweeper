@@ -171,3 +171,8 @@ function playSound(row, col){
   }
 }
 
+function setImage(){
+  var elImage = document.querySelector(".img");
+  elImage.src = 'imeges/smile.jpg';
+}
+

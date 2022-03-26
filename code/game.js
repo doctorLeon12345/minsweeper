@@ -74,6 +74,7 @@ function startGame(elBtn){
          MINE = '&#xf1e2;';
          gMines = [];
          init();
+         setImage();
     }
     else if(parseInt(elBtn.id) === 2){
          gBoard;
@@ -95,6 +96,7 @@ function startGame(elBtn){
          MINE = '&#xf1e2;';
          gMines = [];
          init();
+         setImage();
     }
     else if(parseInt(elBtn.id) === 3){
          gBoard;
@@ -116,6 +118,7 @@ function startGame(elBtn){
          MINE = '&#xf1e2;';
          gMines = [];
          init();
+         setImage();
     }
 }
 
